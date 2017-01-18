@@ -7,8 +7,7 @@
   <body>
     <%- include('partials/_header'); %>
     <ul>
-          <li><%= shortURL + ' => ' + longUrl %></li>
-
+          <li>This shortUrl => <a href= <%="/u/" +shortURL %> ><%= shortURL %></a>: goes to =>  <%= longUrl %></li>
     </ul>
   </body>
 </html>
