@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>This tiny app is such a TinyApp</title>
-  </head>
+<head>
+  <%- include('partials/_head'); %>
+<link rel="stylesheet" type="text/css" href="/style.css">
+
+</head>
   <body>
     <%- include('partials/_header'); %>
     <ul>
           <li>This shortUrl => <a href= <%="/u/" +shortURL %> ><%= shortURL %></a>: goes to =>  <%= longUrl %></li>
     </ul>
+<form action=<%="/urls/" + shortURL +"/update"%> method="POST">
+  <label for="name"><%= longUrl %> :</label>
+  <input type="text" id="name" name="user_name" />
+  <button>Update Url</button>
+</form>
   </body>
 </html>

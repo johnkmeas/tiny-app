@@ -3,13 +3,18 @@
   <head>
     <meta charset="utf-8">
     <title>TinyApp</title>
+    <link rel="stylesheet" type="text/css" href="/style.css">
   </head>
   <body>
     <%- include('partials/_header'); %>
-    <ul>
-      <% for(let i in urls) {%>
-          <li><%= urls[i] %></li>
-      <% } %>
-    </ul>
+    <% for(let i in urls) {%>
+      <form  action=<%="/urls/" + i + "/delete"%> method="POST" style="margin:150px; background-color:orange;">
+        <label for= <%= urls[i] %> ><%=i + ' ==> ' +  urls[i] %>:</label>
+        <a href=<%="/urls/" + i %>>Edit</a>
+        <button type="submit">Delete</button
+      </form>
+    <% } %>
+
+    </form>
   </body>
 </html>

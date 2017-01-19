@@ -3,9 +3,11 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 8080; // default port 8080
 const bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({extended: true}));
 
+app.use(express.static(__dirname + '/styles'));
+app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs')
+
 
 let shortUrl;
 
@@ -30,6 +32,7 @@ app.get('/', (req, res) => {
 app.get('/urls', (req, res) => {
   console.log("loading GET /urls");
   let templateVars = { urls: urlDatabase};
+  //console.log(urlDatabase);
   res.render('urls_index', templateVars);
 });
 
@@ -38,10 +41,8 @@ app.get('/urls/new', (req, res) => {
   res.render('urls_new');
 });
 
-app.post('/urls/create', (req, res) => {
+app.post('/urls/new', (req, res) => {
   console.log("loading GET /urls/create");
-  // console.log('req: ',req.body.longURL);  // debug statement
-  // console.log('req.body: ',req.body);  // debug statement to see POST parameters
   let longUrl = req.body.longURL
   shortUrl = generateRandomString()
   console.log('longUrl: ', longUrl, 'shortUrl:', shortUrl)
@@ -50,21 +51,27 @@ app.post('/urls/create', (req, res) => {
     res.redirect('/urls/new');
   }
   urlDatabase[shortUrl] = longUrl
-  // console.log('Updated database: ', urlDatabase)
-  console.log('----------------------')
   res.redirect(`/urls/${shortUrl}`);
-  // res.redirect('/');
-  //res.send('Ok');         // Respond with 'Ok' (we will replace this)
+});
+
+app.post('/urls/:id/delete', (req, res) => {
+  let idDelete = req.params.id
+  delete urlDatabase[idDelete]
+  console.log(urlDatabase)
+  res.redirect('/urls')
+});
+
+app.post('/urls/:id/update', (req, res) => {
+  let idUpdate = req.params.id
+  urlDatabase[idUpdate] = req.body.user_name
+  console.log( urlDatabase)
+  res.redirect('/urls')
 });
 
 app.get('/u/:shortUrl', (req, res) => {
-  // let longURL =
   console.log('this is the short redirect!')
-  // console.log('longUrl: ', longUrl)
-  // console.log('ulrDAtabase.req.para,', urlDatabase[shortUrl])
-  // res.redirect('http://example.com')
-  let longURL = urlDatabase[req.params.shortUrl];
-  res.redirect(longURL);
+  let longUrl = urlDatabase[req.params.shortUrl];
+  res.redirect(longUrl);
 });
 
 app.get('/urls/:id', (req, res) => {
@@ -79,10 +86,6 @@ app.get('/urls/:id', (req, res) => {
 
 app.get('/urls.json', (req, res) => {
   res.json(urlDatabase);
-});
-
-app.get('/hello', (req, res) => {
-  res.end('<html><body>Hello <b>World</b></body></html>\n');
 });
 
 app.listen(PORT, () => {
