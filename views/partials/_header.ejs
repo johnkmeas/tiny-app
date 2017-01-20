@@ -3,22 +3,23 @@
   <h3>we make</h3>
   <h4>your</h4>
   <h6>tiny</h6>
-  <% if( username.length < 1) {%>
-    <h2>SignIn
-      </h2>
-    SignIn
-  <form class="" action="/login" method="post">
-    <input type="text" name="username">
-    <button name="button">Click me</button>
-  </form>
-  <% } %>
-  <% if( username.length > 0) {%>
+
+  <% if( user) {%>
     <h2>Username is:
-        <%= username %>
+        <%= user.email %>
       </h2>
+      <a href="/">Home</a>
+      <a href="/urls/new">ADD URL</a>
+
     <form class="" action="/logout" method="post">
-      <button name="button">delete</button>
+      <button name="button">logout</button>
     </form>
+  <% } else { %>
+    <h2>Register
+      </h2>
+      <a href="/register">register</a>
+      <a href="/login">login</a>
+
   <% } %>
 
 </header>

@@ -7,13 +7,18 @@
   </head>
   <body>
     <%- include('partials/_header'); %>
-    <% for(let i in urls) {%>
-      <form  action=<%="/urls/" + i + "/delete"%> method="POST" style="margin:150px; background-color:orange;">
-        <label for= <%= urls[i] %> ><%=i + ' ==> ' +  urls[i] %>:</label>
-        <a href=<%="/urls/" + i %>>Edit</a>
-        <button type="submit">Delete</button
-      </form>
-    <% } %>
+    <% if(urlArray){%>
+      <h1>Here's your fucking shortURls</h1>
+      <% for(var i = 0; i < urlArray.urlsList.length; i++) {%>
+        <form  action=<%="/urls/" + urlArray.urlsList[i] + "/delete"%> method="POST">
+          <label for=  ><%= urlArray.urlsList[i] %> => <%= data[urlArray.urlsList[i]] %></label>
+          <a href=<%="/urls/" + urlArray.urlsList[i] %>>Edit</a>
+          <button type="submit">Delete</button
+        </form>
+
+        <h3><%=  data[urlArray.urlsList[i]] %></h3>
+      <% }%>
+    <% }%>
 
     </form>
   </body>
