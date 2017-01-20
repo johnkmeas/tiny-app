@@ -1,22 +1,29 @@
 'use strict';
+const cookieSession = require('cookie-session')
 const express = require('express');
 const urlFile = require('./urls');
 const app = express();
-var cookieParser = require('cookie-parser')
+// var cookieParser = require('cookie-parser')
 const PORT = process.env.PORT || 8080; // default port 8080
 const bodyParser = require('body-parser');
 
 const bcrypt = require('bcrypt');
-const password = "purple-monkey-dinosaur"; // you will probably this from req.params
-const hashed_password = bcrypt.hashSync(password, 10);
+// const password = "purple-monkey-dinosaur"; // you will probably this from req.params
+// const hashed_password = bcrypt.hashSync(password, 10);
 
-app.use(cookieParser())
+// app.use(cookieParser())
 app.use(express.static(__dirname + '/styles'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs')
 
+app.use(cookieSession({
+  name: "session",
+  secret: "somesecret"
+}));
+
 app.use(function(req, res, next){
-  res.locals.user = users[req.cookies.user_id]
+  res.locals.user = users[req.session.user_id]
+  console.log(req.session.user_id)
   next()
 })
 
@@ -68,21 +75,23 @@ app.post('/register', (req, res) => {
     email: useremail,
     password: hashpassword,
     urlsList :[]
-   }
-   console.log(users)
-   res.cookie('user_id', userId )
+  }
+  req.session.user_id = '';
+  // console.log(res.session.user_id)
+  req.session.user_id = userId;
+  // res.cookie('user_id', userId )
   res.redirect('/');
 })
 
 app.get('/urls', (req, res) => {
   console.log("loading GET /urls");
   // console.log('User id from user ',  req.cookies.user_id)
-  console.log('Users ID for database:', req.cookies.user_id)
-  console.log('cookies collection:', users[req.cookies.user_id])
+  // console.log('Users ID for database:', req.cookies.user_id)
+  // console.log('cookies collection:', users[req.cookies.user_id])
 
   let templateVars = {
     data : urlDatabase,
-    urlArray : users[req.cookies.user_id]
+    urlArray : users[req.session.user_id]
   };
 
   res.render('urls_index', templateVars);
@@ -110,7 +119,7 @@ app.post('/urls/new', (req, res) => {
   // users
   // req.cookies.user_id
   amount += 1;
-  users[req.cookies.user_id].urlsList.push(shortUrl)
+  users[req.session.user_id].urlsList.push(shortUrl)
   //console.log(users)
   urlDatabase[shortUrl] = longUrl
   // console.log(urlDatabase)
@@ -131,7 +140,8 @@ app.post('/login', (req, res) => {
       console.log('Login Successful')
       console.log('Check for hash',users)
       loggedIn = users[item]
-      res.cookie('user_id', users[item].id, 'username', users[item].email)
+      res.session.user_id = users[item].id;
+      res.session.username = users[item].email;
       res.redirect('/');
 
     }
@@ -148,8 +158,8 @@ app.post('/login', (req, res) => {
 
 app.post('/logout', (req, res) => {
 
-  res.cookie('user_id', ''); // set cookies username
-  // console.log(req.cookies['username'])
+  req.session.user_id = ''; // set cookies username
+  console.log('logout session user_id:  ', req.session.user_id.length)
   res.redirect('/');
 });
 
@@ -159,14 +169,14 @@ app.post('/urls/:id/delete', (req, res) => {
   // console.log("URLs:", urlDatabase);
   // console.log("users:", users);
   // console.log("Id of ORGINAL user: =>", req.cookies.user_id, req.params.id)
-  if(users[req.cookies.user_id].urlsList.includes(req.params.id)){
+  if(users[req.session.user_id].urlsList.includes(req.params.id)){
     let idDelete = req.params.id
     delete urlDatabase[idDelete]
   }
 
   // delete urlDatabase[idDelete]
   // console.log(users)
-  let array = users[req.cookies.user_id].urlsList
+  let array = users[req.session.user_id].urlsList
   let indexToDelete = array.indexOf(req.params.id)
   array.splice(indexToDelete, 1)  // wait, what if indexToDelete is -1 ?  that'll suck
 
