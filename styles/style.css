@@ -13,7 +13,7 @@ header {
 }
 
 form {
-  height: 90vh;;
+  padding: 20px;;
   background-color: lightyellow;
   border-radius: 10px;
 }

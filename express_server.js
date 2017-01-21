@@ -21,6 +21,7 @@ app.use(cookieSession({
   secret: "somesecret"
 }));
 
+//creates a user function
 app.use(function(req, res, next){
   res.locals.user = users[req.session.user_id]
   console.log(req.session.user_id)
@@ -31,6 +32,7 @@ let shortUrl;
 let users = {};
 let loggedIn = {};
 let amount = 0;
+
 const urlDatabase = {
   'b2xVn2': 'http://www.lighthouselabs.ca',
   '9sm5xK': 'http://www.google.com'
@@ -47,7 +49,9 @@ function generateRandomString() {
 
 app.get('/', (req, res) => {
   // res.send(req.cookies);
-
+  !res.locals.user ? res.redirect('login') : res.redirect('urls');
+  console.log('res.locals.user: ', res.locals.user);
+  console.log('users[req.session.user_id]: ', users[req.session.user_id])
   res.redirect('urls');
 });
 
@@ -85,21 +89,41 @@ app.post('/register', (req, res) => {
 
 app.get('/urls', (req, res) => {
   console.log("loading GET /urls");
-  // console.log('User id from user ',  req.cookies.user_id)
-  // console.log('Users ID for database:', req.cookies.user_id)
-  // console.log('cookies collection:', users[req.cookies.user_id])
-
   let templateVars = {
     data : urlDatabase,
     urlArray : users[req.session.user_id]
   };
+  if(req.session.user_id){
+    res.status(200)
+    res.render('urls_index', templateVars);
+    res.render('partials/_header', templateVars);
+    console.log('cookie available!!!')
+  }else {
+    res.status(401)
+    res.send('<a href="/login">login</a>')
 
-  res.render('urls_index', templateVars);
+  }
+
+
+
+
 });
 
 app.get('/urls/new', (req, res) => {
   console.log("loading GET /urls/new");
-  res.render('urls_new');
+  console.log('Cookie available for new: ',req.session.user_id);
+  if(!req.session.user_id){
+    res.status(401)
+    res.send('<h2>Error! Please Login</h2><a href="/login">login</a>')
+
+  } if(req.session.user_id) {
+    let templateVars = {
+      data : urlDatabase,
+      urlArray : users[req.session.user_id]
+    };
+    res.status(200)
+    res.render('urls_new', templateVars);
+  }
 });
 
 app.post('/urls/new', (req, res) => {
@@ -128,7 +152,15 @@ app.post('/urls/new', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-  res.render('login')
+  if(res.locals.user){
+    res.redirect('')
+  }else {
+    let templateVars = {
+      data : urlDatabase,
+      urlArray : users[req.session.user_id]
+    };
+    res.render('login', templateVars)
+  }
 });
 
 app.post('/login', (req, res) => {
@@ -137,23 +169,28 @@ app.post('/login', (req, res) => {
   // bcrypt.compareSync(userpassword, hashed_password);
   for(var item in users){
     if(users[item].email === useremail && bcrypt.compareSync(userpassword, users[item].password)){
-      console.log('Login Successful')
-      console.log('Check for hash',users)
-      loggedIn = users[item]
-      res.session.user_id = users[item].id;
-      res.session.username = users[item].email;
-      res.redirect('/');
+      // console.log('Login Successful')
+      // console.log('Check for hash',users)
+      // // loggedIn = users[item]
+      // console.log('users: ', users[item].id)
+      // res.locals.user = users[item].id
+      // res.locals.email = users[item].username
+      // req.session.user_id
+      req.session.user_id = users[item].id;
+      req.session.username = users[item].email;
+      console.log('users after login: ', req.session.user_id, users[item].id)
+      return res.redirect('/');
 
     }
   }
   for(var item in users){
     if(users[item].email !== useremail && users[item].password !== userpassword){
       console.log('Wrong Username or password')
-      return res.status(400).send('wrong username or password')
+      return res.status(401).send('<h1>wrong username or password</h1>')
     }
   }
   // console.log(users)
-  res.redirect('/');
+  // res.redirect('/');
 });
 
 app.post('/logout', (req, res) => {
@@ -161,6 +198,68 @@ app.post('/logout', (req, res) => {
   req.session.user_id = ''; // set cookies username
   console.log('logout session user_id:  ', req.session.user_id.length)
   res.redirect('/');
+});
+
+app.get('/urls/:id', (req, res) => {
+  console.log("loading GET /urls/:id");
+  console.log('check or :ID: ', req.params.id)
+  const user = users[req.session.user_id];
+  // const userData = user.urlsList;
+
+  // console.log('user.urlsList.includes(req.params.id)', user.urlsList.includes(req.params.id))
+  // console.log('user.urlsList.', user.urlsList)
+   console.log('users:', users)
+  // console.log('users:', users[urlsList])
+  // console.log(users[req.session.user_id].urlsList.includes(req.params.id))
+console.log('users[req.session.user_id]:', users)
+function scanUrl(x){
+  for(var i in users){
+    // console.log('EAch:', users[i].urlsList.includes(x))
+    if(users[i].urlsList.includes(x)){
+      return true
+    }
+  }
+  return false
+}
+
+  if(user){
+    res.status(200)
+    console.log('You have a User!')
+    if(user.urlsList.includes(req.params.id)){
+      console.log(users)
+      // default case urls_show
+      return console.log('You have this in you database!')
+    }
+    else if(scanUrl(req.params.id)){
+      res.status(403).send('<h2>it is in another database</h2>')
+    }
+    else{//User does not have this in database, its in another's
+      res.status(404).send('Item does not exist in database')
+    }
+  }else {//users not loggin
+    res.status(401).send('<h2>Error! Please Login</h2><a href="/login">login</a>')
+    console.log("Have NO User!")
+  }
+
+
+  // if(user.urlsList.includes(req.params.id)){}
+  // console.log('users id to compare: ',users[req.session.user_id].urlsList.includes(req.params.id))
+  // if(users[req.session.user_id].urlsList.includes(req.params.id)){
+  //   let templateVars = {
+  //     shortURL: req.params.id,
+  //     longUrl: urlDatabase[req.params.id],// gonna make it undefined cuz
+  //     urlArray : users[req.session.user_id],
+  //     data: urlDatabase
+  //   };
+
+  //   console.log("longUrl: ");
+  //   res.render('urls_show', templateVars);
+  //   res.render('partials/_header', templateVars);
+  // }if(!users[req.session.user_id].urlsList.includes(req.params.id)){
+  //   return res.status(403).send('<h1>You do not have this url</h1>')
+  // }if(!req.session.user_id){
+  //   return res.status(401).send('<h1>Please Login</h1><a href="/login">login</a>')
+  // }
 });
 
 app.post('/urls/:id/delete', (req, res) => {
@@ -204,20 +303,6 @@ app.get('/u/:shortUrl', (req, res) => {
   let longUrl = urlDatabase[req.params.shortUrl];
   console.log(urlDatabase[req.params.shortUrl])
   res.redirect(longUrl);
-});
-
-app.get('/urls/:id', (req, res) => {
-  console.log("loading GET /urls/:id");
-  let templateVars = {
-    shortURL: req.params.id,
-    longUrl: urlDatabase[req.params.id]
-  };
-  console.log("longUrl: ");
-  res.render('urls_show', templateVars);
-});
-
-app.get('/urls.json', (req, res) => {
-  res.json(urlDatabase);
 });
 
 app.listen(PORT, () => {

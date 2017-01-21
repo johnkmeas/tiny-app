@@ -4,7 +4,20 @@
   <h4>your</h4>
   <h6>tiny</h6>
 
-  <% if( user) {%>
+<% if (urlArray) { %>
+  <h2><%= urlArray.email %></h2>
+  <% for(var i in urlArray.urlsList) {%>
+        <form  action=<%="/urls/" + urlArray.urlsList[i] + "/delete"%> method="POST">
+          <label for= ""><%= urlArray.urlsList[i] %> => <%= data[urlArray.urlsList[i]] %></label>
+          <a href=<%="/urls/" + urlArray.urlsList[i] %> >Edit</a>
+          <button type="submit">Delete</button
+        </form>
+
+  <% } %>
+  <a href="/urls/new">New Url</a>
+<% } %>
+
+<% if( user ) { %>
     <h2>Username is:
         <%= user.email %>
       </h2>
@@ -21,5 +34,3 @@
       <a href="/login">login</a>
 
   <% } %>
-
-</header>
