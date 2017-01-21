@@ -192,8 +192,10 @@ app.post('/login', (req, res) => {
 });
 
 app.post('/logout', (req, res) => {
-  req.session.user_id = ''; // set cookies username
-  console.log('logout session user_id:  ', req.session.user_id.length)
+  req.session = null;
+  res.locals = null;
+  console.log('TRying to Logout ==> ', req.session)
+  // console.log('logout session user_id:  ', req.session.user_id.length)
   res.redirect('/');
 });
 
@@ -278,8 +280,11 @@ app.post('/urls/:id/update', (req, res) => {
 
 app.get('/u/:shortUrl', (req, res) => {
   console.log('this is the short redirect!', req.params.shortUrl)
-  let longUrl = urlDatabase[req.params.shortUrl];
-  res.redirect(longUrl);
+  if(req.params.shortUrl){
+    let longUrl = urlDatabase[req.params.shortUrl];
+    res.redirect(longUrl);
+  }
+
 });
 
 app.listen(PORT, () => {

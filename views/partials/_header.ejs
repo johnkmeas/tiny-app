@@ -4,35 +4,35 @@
   <h4>your</h4>
   <h6>tiny</h6>
 
-<% if (urlArray) { %>
-  <h2><%= urlArray.email %></h2>
-  <% for(var i in urlArray.urlsList) {%>
-        <form  action=<%="/urls/" + urlArray.urlsList[i] + "/delete"%> method="POST">
+  <% if (urlArray) { %>
+    <h2><%= urlArray.email %></h2>
+    <% for(var i in urlArray.urlsList) {%>
+      <form  action=<%="/urls/" + urlArray.urlsList[i] + "/delete"%> method="POST">
         <li><%= data[urlArray.urlsList[i]] %></li>
         <a href=<%="/u/" +  urlArray.urlsList[i] %>><%= urlArray.urlsList[i] %></a>
-          <!-- <label for= ""><%= urlArray.urlsList[i] %> => <%= data[urlArray.urlsList[i]] %></label> -->
-          <a href=<%="/urls/" + urlArray.urlsList[i] %> >Edit</a>
-          <button type="submit">Delete</button
-        </form>
+            <!-- <label for= ""><%= urlArray.urlsList[i] %> => <%= data[urlArray.urlsList[i]] %></label> -->
+        <a href=<%="/urls/" + urlArray.urlsList[i] %> >Edit</a>
+        <button type="submit">Delete</button>
+      </form>
 
+    <% } %>
+    <a href="/urls/new">New Url</a>
   <% } %>
-  <a href="/urls/new">New Url</a>
-<% } %>
 
-<% if( user ) { %>
+  <% if( user ) { %>
     <h2>Username is:
         <%= user.email %>
-      </h2>
-      <a href="/">Home</a>
-      <a href="/urls/new">ADD URL</a>
-
-    <form class="" action="/logout" method="post">
-      <button name="button">logout</button>
+    </h2>
+    <form action="/logout" method="POST">
+      <button type="submit">logout</button>
     </form>
+
+    <a href="/">Home</a>
+    <a href="/urls/new">ADD URL</a>
+
   <% } else { %>
-    <h2>Register
-      </h2>
+    <h2>Register</h2>
       <a href="/register">register</a>
       <a href="/login">login</a>
-
   <% } %>
+</header>

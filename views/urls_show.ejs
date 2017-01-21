@@ -8,7 +8,7 @@
   <body>
     <%- include('partials/_header'); %>
     <ul>
-          <li>This shortUrl => <a href= <%="/u/" +shortURL %> ><%= shortURL %></a>: goes to =>  <%= longUrl %></li>
+      <li>This shortUrl => <a href= <%="/u/" +shortURL %> ><%= shortURL %></a>: goes to =>  <%= longUrl %></li>
     </ul>
     <form action=<%="/urls/" + shortURL +"/update"%> method="POST">
       <label for="name"><%= longUrl %> :</label>
