@@ -16,6 +16,7 @@ app.use(express.static(__dirname + '/styles'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs')
 
+//
 app.use(cookieSession({
   name: "session",
   secret: "somesecret"
@@ -37,7 +38,7 @@ const urlDatabase = {
   'b2xVn2': 'http://www.lighthouselabs.ca',
   '9sm5xK': 'http://www.google.com'
 };
-
+//Generates random string
 function generateRandomString() {
   let randomStr = "";
   while(randomStr.length < 6 && 6 > 0){
@@ -55,6 +56,7 @@ app.get('/', (req, res) => {
   res.redirect('urls');
 });
 
+
 app.get('/register', (req, res) => {
   res.render('register');
 })
@@ -63,6 +65,7 @@ app.post('/register', (req, res) => {
   let userId = generateRandomString() + 'ID';
   const useremail = req.body.email
   const userpassword = req.body.password
+  //encrypt hashed password
   const hashpassword =  bcrypt.hashSync(req.body.password, 10);
 
   console.log('Usersid', userId)
@@ -71,6 +74,7 @@ app.post('/register', (req, res) => {
       return res.status(400).send('Email already register')
     }
   }
+  //Check for empty string
   if(useremail.length === 0 || userpassword.length === 0){
     return res.status(400).send('Empty')
   }
@@ -87,6 +91,7 @@ app.post('/register', (req, res) => {
   res.redirect('/');
 })
 
+//
 app.get('/urls', (req, res) => {
   console.log("loading GET /urls");
   let templateVars = {
@@ -101,21 +106,17 @@ app.get('/urls', (req, res) => {
   }else {
     res.status(401)
     res.send('<a href="/login">login</a>')
-
   }
-
-
-
-
 });
 
+//New url
 app.get('/urls/new', (req, res) => {
   console.log("loading GET /urls/new");
   console.log('Cookie available for new: ',req.session.user_id);
+
   if(!req.session.user_id){
     res.status(401)
     res.send('<h2>Error! Please Login</h2><a href="/login">login</a>')
-
   } if(req.session.user_id) {
     let templateVars = {
       data : urlDatabase,
@@ -126,6 +127,7 @@ app.get('/urls/new', (req, res) => {
   }
 });
 
+//Make new url
 app.post('/urls/new', (req, res) => {
   console.log("loading GET /urls/create");
   let longUrl = req.body.longURL
@@ -135,13 +137,7 @@ app.post('/urls/new', (req, res) => {
     console.log('Invalid URL')
     res.redirect('/urls/new');
   }
-  // users[user.user_id] = {
-  //   id: userId,
-  //   email: useremail,
-  //   password: userpassword
-  // }
-  // users
-  // req.cookies.user_id
+
   amount += 1;
   users[req.session.user_id].urlsList.push(shortUrl)
   //console.log(users)
@@ -151,6 +147,7 @@ app.post('/urls/new', (req, res) => {
   res.redirect(`/urls/${shortUrl}`);
 });
 
+//login
 app.get('/login', (req, res) => {
   if(res.locals.user){
     res.redirect('')
@@ -162,6 +159,7 @@ app.get('/login', (req, res) => {
     res.render('login', templateVars)
   }
 });
+
 
 app.post('/login', (req, res) => {
   const useremail = req.body.email;
@@ -194,7 +192,6 @@ app.post('/login', (req, res) => {
 });
 
 app.post('/logout', (req, res) => {
-
   req.session.user_id = ''; // set cookies username
   console.log('logout session user_id:  ', req.session.user_id.length)
   res.redirect('/');
@@ -211,16 +208,16 @@ app.get('/urls/:id', (req, res) => {
    console.log('users:', users)
   // console.log('users:', users[urlsList])
   // console.log(users[req.session.user_id].urlsList.includes(req.params.id))
-console.log('users[req.session.user_id]:', users)
-function scanUrl(x){
-  for(var i in users){
-    // console.log('EAch:', users[i].urlsList.includes(x))
-    if(users[i].urlsList.includes(x)){
-      return true
+  console.log('users[req.session.user_id]:', users)
+  function scanUrl(x){
+    for(var i in users){
+      // console.log('EAch:', users[i].urlsList.includes(x))
+      if(users[i].urlsList.includes(x)){
+        return true
+      }
     }
+    return false
   }
-  return false
-}
 
   if(user){
     res.status(200)
@@ -228,38 +225,19 @@ function scanUrl(x){
     if(user.urlsList.includes(req.params.id)){
       console.log(users)
       // default case urls_show
-      return console.log('You have this in you database!')
-    }
+      console.log('You have this in you database!')
+      return res.redirect('/')
+    } // scan arrays in database matching for matching urls
     else if(scanUrl(req.params.id)){
       res.status(403).send('<h2>it is in another database</h2>')
     }
     else{//User does not have this in database, its in another's
       res.status(404).send('Item does not exist in database')
     }
-  }else {//users not loggin
+  }else {//Users not login
     res.status(401).send('<h2>Error! Please Login</h2><a href="/login">login</a>')
     console.log("Have NO User!")
   }
-
-
-  // if(user.urlsList.includes(req.params.id)){}
-  // console.log('users id to compare: ',users[req.session.user_id].urlsList.includes(req.params.id))
-  // if(users[req.session.user_id].urlsList.includes(req.params.id)){
-  //   let templateVars = {
-  //     shortURL: req.params.id,
-  //     longUrl: urlDatabase[req.params.id],// gonna make it undefined cuz
-  //     urlArray : users[req.session.user_id],
-  //     data: urlDatabase
-  //   };
-
-  //   console.log("longUrl: ");
-  //   res.render('urls_show', templateVars);
-  //   res.render('partials/_header', templateVars);
-  // }if(!users[req.session.user_id].urlsList.includes(req.params.id)){
-  //   return res.status(403).send('<h1>You do not have this url</h1>')
-  // }if(!req.session.user_id){
-  //   return res.status(401).send('<h1>Please Login</h1><a href="/login">login</a>')
-  // }
 });
 
 app.post('/urls/:id/delete', (req, res) => {
@@ -294,14 +272,15 @@ app.post('/urls/:id/delete', (req, res) => {
 app.post('/urls/:id/update', (req, res) => {
   let idUpdate = req.params.id
   urlDatabase[idUpdate] = req.body.user_name
-  console.log( urlDatabase)
+  console.log(urlDatabase)
   res.redirect('/urls')
 });
 
 app.get('/u/:shortUrl', (req, res) => {
-  console.log('this is the short redirect!')
+  console.log('this is the short redirect!', res)
   let longUrl = urlDatabase[req.params.shortUrl];
-  console.log(urlDatabase[req.params.shortUrl])
+
+  // console.log(urlDatabase[req.params.shortUrl])
   res.redirect(longUrl);
 });
 

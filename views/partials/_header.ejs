@@ -8,7 +8,9 @@
   <h2><%= urlArray.email %></h2>
   <% for(var i in urlArray.urlsList) {%>
         <form  action=<%="/urls/" + urlArray.urlsList[i] + "/delete"%> method="POST">
-          <label for= ""><%= urlArray.urlsList[i] %> => <%= data[urlArray.urlsList[i]] %></label>
+        <li><%= data[urlArray.urlsList[i]] %></li>
+        <a href=<%="/u/" +  urlArray.urlsList[i] %>><%= urlArray.urlsList[i] %></a>
+          <!-- <label for= ""><%= urlArray.urlsList[i] %> => <%= data[urlArray.urlsList[i]] %></label> -->
           <a href=<%="/urls/" + urlArray.urlsList[i] %> >Edit</a>
           <button type="submit">Delete</button
         </form>
