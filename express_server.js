@@ -205,7 +205,7 @@ app.get('/urls/:id', (req, res) => {
 
   // console.log('user.urlsList.includes(req.params.id)', user.urlsList.includes(req.params.id))
   // console.log('user.urlsList.', user.urlsList)
-   console.log('users:', users)
+  console.log('users:', users)
   // console.log('users:', users[urlsList])
   // console.log(users[req.session.user_id].urlsList.includes(req.params.id))
   console.log('users[req.session.user_id]:', users)
@@ -277,10 +277,8 @@ app.post('/urls/:id/update', (req, res) => {
 });
 
 app.get('/u/:shortUrl', (req, res) => {
-  console.log('this is the short redirect!', res)
+  console.log('this is the short redirect!', req.params.shortUrl)
   let longUrl = urlDatabase[req.params.shortUrl];
-
-  // console.log(urlDatabase[req.params.shortUrl])
   res.redirect(longUrl);
 });
 
