@@ -25,7 +25,7 @@ app.use(cookieSession({
 //creates a user function
 app.use(function(req, res, next){
   res.locals.user = users[req.session.user_id]
-  console.log(req.session.user_id)
+  // console.log(req.session.user_id)
   next()
 })
 
@@ -51,8 +51,8 @@ function generateRandomString() {
 app.get('/', (req, res) => {
   // res.send(req.cookies);
   !res.locals.user ? res.redirect('login') : res.redirect('urls');
-  console.log('res.locals.user: ', res.locals.user);
-  console.log('users[req.session.user_id]: ', users[req.session.user_id])
+  // console.log('res.locals.user: ', res.locals.user);
+  // console.log('users[req.session.user_id]: ', users[req.session.user_id])
   res.redirect('urls');
 });
 
@@ -68,7 +68,7 @@ app.post('/register', (req, res) => {
   //encrypt hashed password
   const hashpassword =  bcrypt.hashSync(req.body.password, 10);
 
-  console.log('Usersid', userId)
+  // console.log('Usersid', userId)
   for(var item in users){
     if(users[item].email === useremail){
       return res.status(400).send('Email already register')
@@ -91,9 +91,9 @@ app.post('/register', (req, res) => {
   res.redirect('/');
 })
 
-//
+//Main Page
 app.get('/urls', (req, res) => {
-  console.log("loading GET /urls");
+  // console.log("loading GET /urls");
   let templateVars = {
     data : urlDatabase,
     urlArray : users[req.session.user_id]
@@ -102,7 +102,7 @@ app.get('/urls', (req, res) => {
     res.status(200)
     res.render('urls_index', templateVars);
     res.render('partials/_header', templateVars);
-    console.log('cookie available!!!')
+    // console.log('cookie available!!!')
   }else {
     res.status(401)
     res.send('<a href="/login">login</a>')
@@ -111,8 +111,8 @@ app.get('/urls', (req, res) => {
 
 //New url
 app.get('/urls/new', (req, res) => {
-  console.log("loading GET /urls/new");
-  console.log('Cookie available for new: ',req.session.user_id);
+  // console.log("loading GET /urls/new");
+  // console.log('Cookie available for new: ',req.session.user_id);
 
   if(!req.session.user_id){
     res.status(401)
@@ -127,23 +127,22 @@ app.get('/urls/new', (req, res) => {
   }
 });
 
-//Make new url
+//Creates new url
 app.post('/urls/new', (req, res) => {
-  console.log("loading GET /urls/create");
+  // console.log("loading GET /urls/create");
   let longUrl = req.body.longURL
   shortUrl = generateRandomString()
-  console.log('longUrl: ', longUrl, 'shortUrl:', shortUrl)
+  // console.log('longUrl: ', longUrl, 'shortUrl:', shortUrl)
   if(longUrl.length < 3){
-    console.log('Invalid URL')
+    // console.log('Invalid URL')
     res.redirect('/urls/new');
   }
-
-  amount += 1;
+  // amount += 1;
   users[req.session.user_id].urlsList.push(shortUrl)
   //console.log(users)
   urlDatabase[shortUrl] = longUrl
   // console.log(urlDatabase)
-  console.log('-----------')
+  // console.log('-----------')
   res.redirect(`/urls/${shortUrl}`);
 });
 
@@ -176,14 +175,14 @@ app.post('/login', (req, res) => {
       // req.session.user_id
       req.session.user_id = users[item].id;
       req.session.username = users[item].email;
-      console.log('users after login: ', req.session.user_id, users[item].id)
+      // console.log('users after login: ', req.session.user_id, users[item].id)
       return res.redirect('/');
 
     }
   }
   for(var item in users){
     if(users[item].email !== useremail && users[item].password !== userpassword){
-      console.log('Wrong Username or password')
+      // console.log('Wrong Username or password')
       return res.status(401).send('<h1>wrong username or password</h1>')
     }
   }
@@ -203,11 +202,17 @@ app.get('/urls/:id', (req, res) => {
   console.log("loading GET /urls/:id");
   console.log('check or :ID: ', req.params.id)
   const user = users[req.session.user_id];
+  const userId = req.params.id;
+
+  let templateVars = {
+    shortUrl: userId,
+    longUrl: urlDatabase[userId]
+  }
   // const userData = user.urlsList;
 
   // console.log('user.urlsList.includes(req.params.id)', user.urlsList.includes(req.params.id))
   // console.log('user.urlsList.', user.urlsList)
-  console.log('users:', users)
+  // console.log('users:', users)
   // console.log('users:', users[urlsList])
   // console.log(users[req.session.user_id].urlsList.includes(req.params.id))
   console.log('users[req.session.user_id]:', users)
@@ -225,10 +230,10 @@ app.get('/urls/:id', (req, res) => {
     res.status(200)
     console.log('You have a User!')
     if(user.urlsList.includes(req.params.id)){
-      console.log(users)
+      // console.log(users)
       // default case urls_show
       console.log('You have this in you database!')
-      return res.redirect('/')
+      return res.render('urls_show', templateVars)
     } // scan arrays in database matching for matching urls
     else if(scanUrl(req.params.id)){
       res.status(403).send('<h2>it is in another database</h2>')
@@ -242,6 +247,7 @@ app.get('/urls/:id', (req, res) => {
   }
 });
 
+// Delete
 app.post('/urls/:id/delete', (req, res) => {
 
   // console.log("before delete");
@@ -274,12 +280,12 @@ app.post('/urls/:id/delete', (req, res) => {
 app.post('/urls/:id/update', (req, res) => {
   let idUpdate = req.params.id
   urlDatabase[idUpdate] = req.body.user_name
-  console.log(urlDatabase)
+  // console.log(urlDatabase)
   res.redirect('/urls')
 });
 
 app.get('/u/:shortUrl', (req, res) => {
-  console.log('this is the short redirect!', req.params.shortUrl)
+  // console.log('this is the short redirect!', req.params.shortUrl)
   if(req.params.shortUrl){
     let longUrl = urlDatabase[req.params.shortUrl];
     res.redirect(longUrl);
@@ -288,5 +294,5 @@ app.get('/u/:shortUrl', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}!`);
+  // console.log(`Example app listening on port ${PORT}!`);
 });

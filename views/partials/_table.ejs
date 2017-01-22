@@ -1,0 +1,31 @@
+<table class="table table-striped">
+  <% if (urlArray) { %>
+    <tr class="table-header">
+      <th>Tiny Urls Collection</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+    <% for(var i in urlArray.urlsList) {%>
+      <tr>
+        <form  action=<%="/urls/" + urlArray.urlsList[i] + "/delete"%> method="POST">
+          <td><a class="link-style" href=<%="/u/" +  urlArray.urlsList[i] %>><%= urlArray.urlsList[i] %></a></td>
+          <td><%= data[urlArray.urlsList[i]] %></td>
+          <td><button class="btn" type="submit">Delete</button></td>
+        </form>
+        <form action=<%="/urls/" + urlArray.urlsList[i] %> method="GET">
+          <td><button class="btn" type="submit">Edit</button></td></form>
+
+      </tr>
+    <% } %>
+    <tr>
+      <form action="/urls/new" method="GET">
+        <td><button class="btn" type="submit">Add Url</button></td>
+      </form>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  <% } %>
+</table>
+

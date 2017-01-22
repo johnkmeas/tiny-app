@@ -1,19 +1,115 @@
+.container-fluid {
+  max-width: 80%;
+  background-color: #c7f4f8;
+}
+
+.table {
+  width: 100%;
+  margin-bottom: 20px;
+  margin: 0 auto;
+}
+
+.float-right {
+  float: right;
+}
+
+.btn {
+  background-color: #ffd39e;
+  transition: 300ms;
+}
+.btn:hover {
+  transform: scale(1.1);
+  transition: 300ms;
+  background-color: #ffca0b;
+-webkit-box-shadow: 0px 13px 46px -9px rgba(0,0,0,0.75);
+-moz-box-shadow: 0px 13px 46px -9px rgba(0,0,0,0.75);
+box-shadow: 0px 13px 46px -9px rgba(0,0,0,0.75);
+}
+a{
+  transition: 300ms;
+}
+
+a:hover {
+  text-decoration: none;
+  font-size: 1.2em;
+  letter-spacing: 1.3px;
+  transition: 300ms;
+  background: yellow;
+}
+
+
+
+/*
 body {
-    background-color: lightblue;
+  background-color: lightblue;
+  font-family: 'Merriweather', serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
-    color: orange;
-    text-align: center;
+  color: brown;
+
+  font-family: 'Oswald', serif;
+  text-align: center;
 }
 
 header {
   background-color: lightyellow;
   border-radius: 10px;
 }
+a{
+  text-decoration: none;
+  font-family: 'Oswald', serif;
+}
+button {
 
+}
 form {
-  padding: 20px;;
-  background-color: lightyellow;
+
   border-radius: 10px;
 }
+.center {
+  margin: 0 auto;
+}
+table {
+
+
+}
+tr.table-header {
+  background: orange;
+  border-bottom: 5px solid black;
+}
+tr {
+
+
+}
+
+td {
+  padding: 10px;
+}
+
+.site-header {
+
+}
+.center-text {
+  text-align: center;
+}
+.input--styles {
+  background-color: pink;
+}
+
+.btn-style{
+  color: #900;
+  background: #FF0;
+  font-weight: bold;
+  border: 1px solid #900;
+}
+
+.btn-style:hover {
+  color: #FFF;
+  background: #900;
+}
+
+.link-style {
+  color: #900;
+
+}*/

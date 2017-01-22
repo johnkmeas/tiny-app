@@ -1,38 +1,24 @@
-<header>
+<header class="page-header">
   <h1>Tiny App</h1>
-  <h3>we make</h3>
-  <h4>your</h4>
-  <h6>tiny</h6>
+  <p>We make <small>tiny</small>apps</p>
+  <div class="input-styles">
+    <div>
+      <% if( user ) { %>
+        <h2 class="text-center"><small>Welcome:</small> <strong><%= user.email %></strong></h2>
 
-  <% if (urlArray) { %>
-    <h2><%= urlArray.email %></h2>
-    <% for(var i in urlArray.urlsList) {%>
-      <form  action=<%="/urls/" + urlArray.urlsList[i] + "/delete"%> method="POST">
-        <li><%= data[urlArray.urlsList[i]] %></li>
-        <a href=<%="/u/" +  urlArray.urlsList[i] %>><%= urlArray.urlsList[i] %></a>
-            <!-- <label for= ""><%= urlArray.urlsList[i] %> => <%= data[urlArray.urlsList[i]] %></label> -->
-        <a href=<%="/urls/" + urlArray.urlsList[i] %> >Edit</a>
-        <button type="submit">Delete</button>
-      </form>
 
-    <% } %>
-    <a href="/urls/new">New Url</a>
-  <% } %>
-
-  <% if( user ) { %>
-    <h2>Username is:
-        <%= user.email %>
-    </h2>
-    <form action="/logout" method="POST">
-      <button type="submit">logout</button>
-    </form>
-
-    <a href="/">Home</a>
-    <a href="/urls/new">ADD URL</a>
-
-  <% } else { %>
-    <h2>Register</h2>
-      <a href="/register">register</a>
-      <a href="/login">login</a>
-  <% } %>
+        <div>
+          <form action="/logout" method="POST">
+            <button class="btn text-right float-right" type="submit">logout</button>
+          </form>
+        </div>
+      <% } else { %>
+        <div class="register-style">
+          <h2>Register</h2>
+          <a class="link-style" href="/register">register</a>
+          <a class="link-style" href="/login">login</a>
+        </div>
+      <% } %>
+    </div>
+  </div>
 </header>

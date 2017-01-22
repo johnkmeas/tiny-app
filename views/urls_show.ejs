@@ -2,18 +2,37 @@
 <html>
 <head>
   <%- include('partials/_head'); %>
-<link rel="stylesheet" type="text/css" href="/style.css">
+  <link href="https://fonts.googleapis.com/css?family=Oswald:300,400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Oswald:300,400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/style.css">
+
 
 </head>
-  <body>
+  <body class="container-fluid">
     <%- include('partials/_header'); %>
-    <ul>
-      <li>This shortUrl => <a href= <%="/u/" +shortURL %> ><%= shortURL %></a>: goes to =>  <%= longUrl %></li>
-    </ul>
-    <form action=<%="/urls/" + shortURL +"/update"%> method="POST">
-      <label for="name"><%= longUrl %> :</label>
-      <input type="text" id="name" name="user_name" />
-      <button>Update Url</button>
+    <form action="/" method="GET">
+      <td><button class="btn">Save Url</button></td>
     </form>
+    <table class="table table-striped">
+
+      <tr>
+          <td><p><a class="link-style" href= <%="/u/" +shortUrl %> ><%= shortUrl %></a></p></td>
+          <td>
+            <p><strong><%= longUrl %></strong></p>
+          </td>
+          <th></th>
+        </ul>
+      </tr>
+      <tr>
+        <form action=<%="/urls/" + shortUrl +"/update"%> method="POST">
+          <td><label for="name">Change Url:</label></td>
+          <td><input type="text" id="name" name="user_name" /></td>
+          <td><button class="btn">Update Url</button></td>
+        </form>
+      </tr>
+    </table>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   </body>
 </html>
