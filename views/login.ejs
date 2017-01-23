@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="/style.css">
   </head>
   <body class="container-fluid">
+  <%- include('partials/_header'); %>
     <div>
       <h1>Login</h1>
       <form class="center-text" action="/login" method="post">
@@ -17,8 +18,9 @@
         <input type="password" name="password">
         <button class="btn" name="button">submit</button>
       </form>
-      <form action="/register" method="Get">
+      <form class="instead" action="/register" method="Get">
         <button class="btn" name="button">Register</button>
+        <label for="register"><small>* Need an account?</small></label>
       </form>
     </div>
 

@@ -1,15 +1,15 @@
 <header class="page-header">
-  <h1>Tiny App</h1>
-  <p>We make <small>tiny</small>apps</p>
-  <div class="input-styles">
-    <div>
+  <div class="header">
+    <h1>Tiny App</h1>
+    <h4>We make tiny<small>urls</small></h4>
+
       <% if( user ) { %>
-        <h2 class="text-center"><small>Welcome:</small> <strong><%= user.email %></strong></h2>
+        <h3 class="text-left username-header"><small>Welcome:</small> <strong><%= user.email %></strong></h3>
 
-
-        <div>
+</div>
+        <div class="logout-style">
           <form action="/logout" method="POST">
-            <button class="btn text-right float-right" type="submit">logout</button>
+            <button class="btn btn-logout text-right float-right" type="submit">logout</button>
           </form>
         </div>
       <% } else { %>
@@ -19,6 +19,4 @@
           <a class="link-style" href="/login">login</a>
         </div>
       <% } %>
-    </div>
-  </div>
 </header>

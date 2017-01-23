@@ -11,26 +11,40 @@
 </head>
   <body class="container-fluid">
     <%- include('partials/_header'); %>
-    <form action="/" method="GET">
-      <td><button class="btn">Save Url</button></td>
-    </form>
-    <table class="table table-striped">
 
+    <table class="table table-striped">
+      <tr>
+        <th>New tiny url</th>
+        <th>Long url</th>
+      </tr>
       <tr>
           <td><p><a class="link-style" href= <%="/u/" +shortUrl %> ><%= shortUrl %></a></p></td>
           <td>
-            <p><strong><%= longUrl %></strong></p>
+            <p class="long-url"><strong><%= longUrl %></strong></p>
           </td>
+          <th></th>
           <th></th>
         </ul>
       </tr>
       <tr>
+                <form action="/" method="GET">
+            <td><button class="btn slidein">Return to list</button></td>
+          </form>
         <form action=<%="/urls/" + shortUrl +"/update"%> method="POST">
-          <td><label for="name">Change Url:</label></td>
-          <td><input type="text" id="name" name="user_name" /></td>
-          <td><button class="btn">Update Url</button></td>
+
+          <td><input type="text" id="name" name="user_name" />
+          <button class="btn">Update Url</button></td>
+
         </form>
       </tr>
+      <tr>
+
+
+          </td>
+
+        </ul>
+      </tr>
+
     </table>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>

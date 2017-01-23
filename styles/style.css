@@ -1,6 +1,20 @@
 .container-fluid {
   max-width: 80%;
-  background-color: #c7f4f8;
+  background-color: #e2eff5;
+  color: #2b5a82;
+}
+
+.page-header {
+  border-bottom: 10px solid #feea5c;
+  background-color: #fbfe5c;
+}
+
+.header {
+  padding: 10px;
+}
+
+.username-header {
+  color: #2a89db;
 }
 
 .table {
@@ -14,8 +28,11 @@
 }
 
 .btn {
-  background-color: #ffd39e;
+   background-color: #bfdbeb;
   transition: 300ms;
+}
+.long-url {
+  color: #0095ff;
 }
 .btn:hover {
   transform: scale(1.1);
@@ -25,18 +42,66 @@
 -moz-box-shadow: 0px 13px 46px -9px rgba(0,0,0,0.75);
 box-shadow: 0px 13px 46px -9px rgba(0,0,0,0.75);
 }
+
+.btn.btn-add {
+  background-color: #89c8ed;
+}
+
+.btn.btn-add:hover {
+  background-color: #54f4c0;
+}
+
+.instead {
+  margin-top: 20px;
+}
+.btn-logout {
+
+  background-color: #feea5c;
+}
+.logout-style{
+      display: block;
+    position: relative;
+    top: -25px;
+    float: right;
+}
+
 a{
+    color: #2a89db;
   transition: 300ms;
 }
 
 a:hover {
   text-decoration: none;
-  font-size: 1.2em;
-  letter-spacing: 1.3px;
+
+  border-bottom: 4px solid #ffca0b;
+  background-color: #ffe73f;
+  padding: 7px 0;
+  /*letter-spacing: 1.3px;*/
   transition: 300ms;
   background: yellow;
 }
 
+.slidein {
+  animation-duration: 1000ms;
+  animation-name: slidein;
+}
+
+@keyframes slidein {
+  from {
+    margin-left: 1%;
+    transform: scale(1.4);
+    -webkit-box-shadow: 0px 13px 46px -9px rgba(0,0,0,0.75);
+-moz-box-shadow: 0px 13px 46px -9px rgba(0,0,0,0.75);
+box-shadow: 0px 13px 46px -9px rgba(0,0,0,0.75);
+  }
+
+  to {
+    margin-left: 0%;
+    -webkit-box-shadow: 0px
+-moz-box-shadow: 0px
+box-shadow: 0px
+  }
+}
 
 
 /*

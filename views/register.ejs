@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="/style.css">
   </head>
   <body class="container-fluid">
-
+<%- include('partials/_header'); %>
     <h1>Registration</h1>
     <form class="" action="/register" method="post">
       <label for="email">Email</label>
@@ -17,7 +17,10 @@
       <input type="password" name="password">
       <button class="btn" name="button">submit</button>
     </form>
-
+    <form class="instead" action="/login" method="Get">
+      <button class="btn" name="button">login</button>
+      <label for="login"><small>* Already a member?</small></label>
+    </form>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   </body>

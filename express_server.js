@@ -6,7 +6,6 @@ const app = express();
 // var cookieParser = require('cookie-parser')
 const PORT = process.env.PORT || 8080; // default port 8080
 const bodyParser = require('body-parser');
-
 const bcrypt = require('bcrypt');
 // const password = "purple-monkey-dinosaur"; // you will probably this from req.params
 // const hashed_password = bcrypt.hashSync(password, 10);
@@ -38,6 +37,7 @@ const urlDatabase = {
   'b2xVn2': 'http://www.lighthouselabs.ca',
   '9sm5xK': 'http://www.google.com'
 };
+
 //Generates random string
 function generateRandomString() {
   let randomStr = "";
@@ -56,7 +56,6 @@ app.get('/', (req, res) => {
   res.redirect('urls');
 });
 
-
 app.get('/register', (req, res) => {
   res.render('register');
 })
@@ -71,12 +70,12 @@ app.post('/register', (req, res) => {
   // console.log('Usersid', userId)
   for(var item in users){
     if(users[item].email === useremail){
-      return res.status(400).send('Email already register')
+      res.status(400).send('Email already register')
     }
   }
   //Check for empty string
   if(useremail.length === 0 || userpassword.length === 0){
-    return res.status(400).send('Empty')
+    res.status(400).send('Empty field')
   }
   users[userId] = {
     id: userId,
@@ -105,7 +104,7 @@ app.get('/urls', (req, res) => {
     // console.log('cookie available!!!')
   }else {
     res.status(401)
-    res.send('<a href="/login">login</a>')
+    res.redirect('/login')
   }
 });
 
@@ -159,7 +158,6 @@ app.get('/login', (req, res) => {
   }
 });
 
-
 app.post('/login', (req, res) => {
   const useremail = req.body.email;
   const userpassword = req.body.password;
@@ -176,14 +174,14 @@ app.post('/login', (req, res) => {
       req.session.user_id = users[item].id;
       req.session.username = users[item].email;
       // console.log('users after login: ', req.session.user_id, users[item].id)
-      return res.redirect('/');
+      res.redirect('/');
 
     }
   }
   for(var item in users){
     if(users[item].email !== useremail && users[item].password !== userpassword){
       // console.log('Wrong Username or password')
-      return res.status(401).send('<h1>wrong username or password</h1>')
+      res.status(401).send('<h1>wrong username or password</h1>')
     }
   }
   // console.log(users)
@@ -233,7 +231,7 @@ app.get('/urls/:id', (req, res) => {
       // console.log(users)
       // default case urls_show
       console.log('You have this in you database!')
-      return res.render('urls_show', templateVars)
+      res.render('urls_show', templateVars)
     } // scan arrays in database matching for matching urls
     else if(scanUrl(req.params.id)){
       res.status(403).send('<h2>it is in another database</h2>')
@@ -243,7 +241,7 @@ app.get('/urls/:id', (req, res) => {
     }
   }else {//Users not login
     res.status(401).send('<h2>Error! Please Login</h2><a href="/login">login</a>')
-    console.log("Have NO User!")
+
   }
 });
 
