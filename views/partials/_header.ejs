@@ -3,20 +3,20 @@
     <h1>Tiny App</h1>
     <h4>We make tiny<small>urls</small></h4>
 
-      <% if( user ) { %>
-        <h3 class="text-left username-header"><small>Welcome:</small> <strong><%= user.email %></strong></h3>
+    <% if( user ) { %>
+      <h3 class="text-left username-header"><small>Welcome:</small> <strong><%= user.email %></strong></h3>
 
-</div>
-        <div class="logout-style">
-          <form action="/logout" method="POST">
-            <button class="btn btn-logout text-right float-right" type="submit">logout</button>
-          </form>
-        </div>
-      <% } else { %>
-        <div class="register-style">
-          <h2>Register</h2>
-          <a class="link-style" href="/register">register</a>
-          <a class="link-style" href="/login">login</a>
-        </div>
-      <% } %>
+  </div>
+    <div class="logout-style">
+      <form action="/logout" method="POST">
+        <button class="btn btn-logout text-right float-right" type="submit">logout</button>
+      </form>
+    </div>
+    <% } else { %>
+      <div class="register-style">
+        <a class="link-style" href="/login">login</a>
+        <span>or</span>
+        <a class="link-style" href="/register">register</a>
+      </div>
+    <% } %>
 </header>

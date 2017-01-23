@@ -8,7 +8,10 @@
     <link rel="stylesheet" type="text/css" href="/style.css">
   </head>
   <body class="container-fluid">
-  <%- include('partials/_header'); %>
+    <div class="header page-header">
+      <h1>Tiny App</h1>
+      <h4>We make tiny<small>urls</small></h4>
+    </div>
     <div>
       <h1>Login</h1>
       <form class="center-text" action="/login" method="post">
@@ -23,9 +26,7 @@
         <label for="register"><small>* Need an account?</small></label>
       </form>
     </div>
-
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   </body>
 </html>
