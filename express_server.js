@@ -86,11 +86,11 @@ app.get('/urls', (req, res) => {
     urlArray : users[req.session.user_id]
   };
 
-  if(req.session.user_id){
+  if (req.session.user_id){
     res.status(200);
     res.render('urls_index', templateVars);
-    res.render('partials/_header', templateVars);
-  }else {
+    // res.render('partials/_header', templateVars);
+  } else {
     res.status(401);
     res.redirect('/login');
   }
@@ -98,10 +98,11 @@ app.get('/urls', (req, res) => {
 
 //New url
 app.get('/urls/new', (req, res) => {
-  if(!req.session.user_id){
+  if (!req.session.user_id) {
     res.status(401);
     res.send('<h2>Error! Please Login</h2><a href="/login">login</a>');
-  } if(req.session.user_id) {
+  }
+  if (req.session.user_id) {
     let templateVars = {
       data : urlDatabase,
       urlArray : users[req.session.user_id]
@@ -131,7 +132,7 @@ app.post('/urls/new', (req, res) => {
 //login
 app.get('/login', (req, res) => {
   if(res.locals.user){
-    res.redirect('');
+    res.redirect('/');
   }else {
     let templateVars = {
       data : urlDatabase,
@@ -217,6 +218,7 @@ app.post('/urls/:id/delete', (req, res) => {
 });
 
 app.post('/urls/:id/update', (req, res) => {
+  console.log('Trying to PUT for UPDATE!')
   let idUpdate = req.params.id
   urlDatabase[idUpdate] = req.body.user_name
   res.redirect('/urls')
