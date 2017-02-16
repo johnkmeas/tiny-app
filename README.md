@@ -7,7 +7,7 @@ First application built during second week of bootcamp at **Lighthouse Labs**.
 
 ## Application
 
-Allows a user to register and/or login to create and save short urls generated from regular urls that are submitted. Short urls will redirect to the original url when clicked.
+Allows a user to register or login to create and save short urls generated from regular urls that are submitted. Short urls will redirect to the original url when clicked.
 
 Built with **nodejs**
 
@@ -30,3 +30,6 @@ In terminal
 Run
 
 `$ node express_server`
+
+#### Todos
+UI needs some work.
